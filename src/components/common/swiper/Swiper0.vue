@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  name: "Swiper",
   props: {
     // 自动滚动间隔时间
     interval: {
@@ -53,7 +54,7 @@ export default {
       scrolling: false, // 是否正在滚动
     };
   },
-  mounted() {
+  mounted: function () {
     setTimeout(() => {
       // 1.操作DOM，在前后添加Slide
       this.handleDom();

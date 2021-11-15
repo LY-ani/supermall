@@ -1,15 +1,41 @@
 <template>
   <div id="detail">
-    <detail-nav-bar></detail-nav-bar>
-    <!-- <scroll class="contentD"> -->
-    <detail-swiper :topImages="topImages"></detail-swiper>
-    <detail-base-info :goods="goods"></detail-base-info>
-    <detail-shop-info :shop="shop"></detail-shop-info>
-    <detail-goods-info :detailInfo="detailInfo"></detail-goods-info>
-    <detail-param-info :paramInfo="paramInfo"></detail-param-info>
-    <detail-comment-info :commentInfo="commentInfo"></detail-comment-info>
-    <goods-list :goods="recommends"></goods-list>
-    <!-- </scroll> -->
+    <detail-nav-bar
+      class="top-nav"
+      @titleClick="titleClick"
+      ref="detailnav"
+    ></detail-nav-bar>
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+    >
+      <!-- <div>{{ this.$store.state.cartList.length }}</div> -->
+      <!-- <ul>
+        <li v-for="(item, index) in this.$store.state.cartList" :key="index">
+          {{ item }}
+        </li>
+      </ul> -->
+      <detail-swiper :topImages="topImages"></detail-swiper>
+      <detail-base-info :goods="goods"></detail-base-info>
+      <detail-shop-info :shop="shop"></detail-shop-info>
+      <detail-goods-info
+        :detailInfo="detailInfo"
+        @imageLoad="imageLoad"
+      ></detail-goods-info>
+      <detail-param-info
+        ref="params"
+        :paramInfo="paramInfo"
+      ></detail-param-info>
+      <detail-comment-info
+        ref="comment"
+        :commentInfo="commentInfo"
+      ></detail-comment-info>
+      <goods-list ref="recommend" :goods="recommends"></goods-list>
+    </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
+    <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
   </div>
 </template>
 
@@ -21,9 +47,11 @@ import DetailShopInfo from "./childComps/DetailShopInfo.vue";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo.vue";
 import DetailParamInfo from "./childComps/DetailParamInfo.vue";
 import DetailCommentInfo from "./childComps/DetailCommentInfo.vue";
+import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 
 import Scroll from "components/common/scroll/Scroll.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
+import BackTop from "components/content/backTop/BackTop.vue";
 
 import {
   getDetail,
@@ -44,8 +72,10 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBottomBar,
     Scroll,
     GoodsList,
+    BackTop,
   },
   data() {
     return {
@@ -58,7 +88,74 @@ export default {
       commentInfo: {},
       recommends: [],
       currentIndex: 0,
+      isShowBackTop: false,
+      themeTopYs: [],
     };
+  },
+  methods: {
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1000;
+      // console.log(this.$refs.detailnav.currentIndex);
+      for (let i = 0; i < this.themeTopYs.length; i++) {
+        if (
+          this.currentIndex !== i &&
+          -position.y >= this.themeTopYs[i] &&
+          -position.y < this.themeTopYs[i + 1]
+        ) {
+          this.currentIndex = i;
+          this.$refs.detailnav.currentIndex = this.currentIndex;
+        }
+      }
+    },
+    loadMore() {
+      console.log("pullingUp");
+    },
+    titleClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300);
+    },
+    imageLoad() {
+      this.themeTopYs = [];
+      this.themeTopYs.push(0);
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      // console.log(this.$refs.comment.$el.offsetTop);
+      // console.log(this.$refs.recommend.$el.offsetTop);
+      // let commentOffsetTop = this.$refs.comment.$el
+      //   ? this.$refs.comment.$el.offsetTop
+      //   : this.$refs.recommend.$el.offsetTop;
+      // console.log(commentOffsetTop);
+      // console.log(typeof this.$refs.comment.$el);
+      let commentOffsetTop = 0;
+      if (typeof this.$refs.comment.$el.offsetTop !== "undefined") {
+        commentOffsetTop = this.$refs.comment.$el.offsetTop;
+        // console.log(commentOffsetTop);
+      } else {
+        commentOffsetTop = this.$refs.recommend.$el.offsetTop;
+        // console.log(commentOffsetTop);
+      }
+      this.themeTopYs.push(commentOffsetTop);
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+      this.themeTopYs.push(Number.MAX_VALUE);
+      // console.log(this.themeTopYs);
+    },
+    addToCart() {
+      // 1.获取购物车需要展示的信息
+      const product = {};
+      product.image = this.topImages[0];
+      product.title = this.goods.title;
+      product.desc = this.goods.desc;
+      product.price = this.goods.realPrice;
+      product.iid = this.iid;
+      product.isChecked = false;
+      // console.log(product);
+
+      // 2.修改store状态
+      // this.$store.commit("addCart", product);
+      this.$store.dispatch("addCart", product);
+    },
   },
 
   created() {
@@ -94,6 +191,15 @@ export default {
       if (data.rate.cRate !== 0) {
         this.commentInfo = data.rate.list[0];
       }
+      //  图片未加载完
+      // this.$nextTick(() => {
+      //   this.themeTopYs = [];
+      //   this.themeTopYs.push(0);
+      //   this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      //   this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      //   this.themeTopYs.push(this.$refs.remmen.$el.offsetTop);
+      //   console.log(this.themeTopYs);
+      // });
     });
 
     // 3.请求推荐数据
@@ -101,6 +207,9 @@ export default {
       // console.log(res);
       this.recommends = res.data.list;
     });
+  },
+  mounted() {
+    // console.log(this.$refs.scroll);
   },
 
   // activated() {
@@ -117,6 +226,22 @@ export default {
   position: relative;
   z-index: 11;
   background-color: #fff;
+  height: 100vh;
+}
+.top-nav {
+  background-color: #fff;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 11;
+}
+.content {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 /* .content {
   height: calc(100% - 44px);

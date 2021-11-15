@@ -12,6 +12,7 @@
         :key="index"
         :src="item"
         alt=""
+        @load="imgLoad(detailInfo.detailImage[0].list.length)"
       />
     </div>
   </div>
@@ -22,27 +23,45 @@ export default {
   props: {
     detailInfo: {
       type: Object,
+      default() {
+        return {};
+      },
     },
   },
-  //   data() {
-  //     return {
-  //       counter: 0,
-  //       imagesLength: 0,
-  //     };
-  //   },
-  //   methods: {
-  //     imgLoad() {
-  //       this.counter += 1;
-  //       if (this.counter === this.imagesLength) {
-  //         this.$emit("imageLoad");
-  //       }
-  //     },
-  //   },
-  //   watch: {
-  //     detailInfo() {
+  data() {
+    return {
+      counter: 0,
+      imagesLength: 0,
+    };
+  },
+
+  methods: {
+    imgLoad(le) {
+      // console.log(le);
+      this.counter += 1;
+      if (this.counter === le) {
+        this.$emit("imageLoad");
+      }
+    },
+  },
+  mounted() {
+    // console.log(this.detailInfo.detailImage[0].list.length);
+    // this.imagesLength = this.detailInfo.detailImage[0].list.length;
+  },
+  // computed: {
+  //   detailInfo() {
+  //     console.log("111");
+  //     if (this.deteilInfo.detailImage[0])
   //       this.imagesLength = this.deteilInfo.detailImage[0].list.length;
-  //     },
   //   },
+  // },
+  // watch: {
+  //   detailInfo() {
+  //     console.log("222");
+  //     if (this.deteilInfo.detailImage[0])
+  //       this.imagesLength = this.deteilInfo.detailImage[0].list.length;
+  //   },
+  // },
 };
 </script>
 

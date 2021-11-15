@@ -90,13 +90,20 @@ export default {
       return this.goods[this.currentType].list;
     },
   },
-  // activated() {
-  //   // this.$refs
-  //   console.log("activated");
-  // },
-  // deactivated() {
-  //   console.log("deactivated");
-  // },
+  activated() {
+    // this.$refs
+    this.$refs.scroll.refresh();
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    // console.log(this.$refs.scroll.refresh);
+    // console.log("activated");
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getCurrentY();
+    // console.log(this.$refs.scroll.scroll.y);
+    // console.log(this.saveY);
+    // console.log(this.$refs.scroll);
+    // console.log("deactivated");
+  },
   created() {
     // 1.请求多个数据
     this.getHomeMultidata();
