@@ -62,6 +62,16 @@ export default {
       } else {
         this.$store.state.allCheck = false;
       }
+      for (let item of this.cartList) {
+        // console.log(item.isChecked);
+        if (item.isChecked) {
+          // 如果有选中就显示删除
+          this.$store.state.isDelete = true;
+          break;
+        } else {
+          this.$store.state.isDelete = false;
+        }
+      }
     },
     decrement() {
       this.product.count--;

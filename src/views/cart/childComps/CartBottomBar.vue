@@ -7,6 +7,9 @@
     <div class="total">
       <span>合计：{{ totalPrice | showPrice }}</span>
     </div>
+    <div class="delete" v-show="this.$store.state.isDelete" @click="deleteCart">
+      删除
+    </div>
     <div class="buy">
       <span>去结算({{ allProduct }})</span>
     </div>
@@ -38,6 +41,7 @@ export default {
     //   return this.$store.state.allCheck;
     // },
   },
+
   methods: {
     isAllCheck() {
       // console.log(this.$store.state.allCheck);
@@ -49,6 +53,10 @@ export default {
       for (let item of this.cartList) {
         item.isChecked = this.$store.state.allCheck;
       }
+      this.$store.state.isDelete = this.$store.state.allCheck;
+    },
+    deleteCart() {
+      this.$store.dispatch("deleteCart");
     },
   },
 };
@@ -62,6 +70,7 @@ export default {
   left: 0;
   right: 0;
   height: 35px;
+
   background-color: #eee;
   box-shadow: 0 -3px 5px #ccc;
   text-align: center;
@@ -80,10 +89,24 @@ export default {
   font-size: 14px;
 }
 .total {
-  flex: 1;
+  line-height: 35px;
+  padding-left: 10px;
+}
+.delete {
+  position: absolute;
+  top: 5px;
+  right: 120px;
+  padding: 3px;
+  font-size: 10px;
+  color: red;
+  border: 1px solid red;
+  border-radius: 3px;
 }
 .buy {
+  position: absolute;
+  right: 0;
   width: 100px;
+  line-height: 35px;
   color: #fff;
   background-color: orangered;
 }

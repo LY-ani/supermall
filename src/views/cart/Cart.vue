@@ -16,7 +16,7 @@
     </scroll> -->
     <cart-list></cart-list>
     <!-- 底部汇总 -->
-    <cart-bottom-bar></cart-bottom-bar>
+    <cart-bottom-bar ref="cartbottom"></cart-bottom-bar>
   </div>
 </template>
 
@@ -54,7 +54,7 @@ export default {
     } else {
       this.$store.state.allCheck = false;
     }
-    console.log("---");
+    // console.log("---");
   },
   computed: {
     ...mapGetters(["cartLength", "cartList"]),

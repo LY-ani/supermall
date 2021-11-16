@@ -3,7 +3,7 @@
     <img :src="showImage" alt="" />
     <div class="goods-info">
       <p>{{ goodsItem.title }}</p>
-      <span class="price">{{ goodsItem.price }}</span>
+      <span class="price">{{ goodsItem.price | showPrice }}</span>
       <span class="collect">{{ goodsItem.cfav }}</span>
     </div>
   </div>
@@ -19,9 +19,15 @@ export default {
       },
     },
   },
+  filters: {
+    showPrice(value) {
+      return "￥" + parseFloat(value).toFixed(2);
+    },
+  },
   methods: {
     clickDetail() {
       this.$router.push("/detail/" + this.goodsItem.iid);
+      // console.log(typeof this.goodsItem.price);
       // this.$router.push({
       //   path: "/detail",
       //   query: {
@@ -30,9 +36,12 @@ export default {
       // });
     },
   },
+
   computed: {
     showImage() {
-      return this.goodsItem.image || this.goodsItem.show.img;
+      return (
+        this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+      );
     },
   },
 };

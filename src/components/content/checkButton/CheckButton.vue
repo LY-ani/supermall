@@ -1,6 +1,6 @@
 <template>
   <div class="check-button" :class="{ check: isChecked }">
-    <img src="~assets/img/cart/tick.svg" alt="" />
+    <img src="~assets/img/cart/tick.svg" alt="" v-show="isChecked" />
   </div>
 </template>
 

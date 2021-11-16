@@ -36,6 +36,9 @@
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
+    <span class="count-show" v-show="isCountShow">
+      <span class="count-span">{{ $store.state.message }}</span>
+    </span>
   </div>
 </template>
 
@@ -89,6 +92,7 @@ export default {
       recommends: [],
       currentIndex: 0,
       isShowBackTop: false,
+      isCountShow: false,
       themeTopYs: [],
     };
   },
@@ -150,11 +154,17 @@ export default {
       product.price = this.goods.realPrice;
       product.iid = this.iid;
       product.isChecked = false;
+      product.isDelete = false;
+      product.message = "";
       // console.log(product);
 
       // 2.修改store状态
       // this.$store.commit("addCart", product);
       this.$store.dispatch("addCart", product);
+      this.isCountShow = true;
+      setTimeout(() => {
+        this.isCountShow = false;
+      }, 2000);
     },
   },
 
@@ -246,4 +256,19 @@ export default {
 /* .content {
   height: calc(100% - 44px);
 } */
+.count-show {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+.count-span {
+  position: relative;
+  top: -50%;
+  left: -50%;
+  padding: 5px 10px;
+  background-color: rgba(3, 3, 3, 0.5);
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+}
 </style>

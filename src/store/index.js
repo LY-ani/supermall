@@ -9,7 +9,9 @@ Vue.use(Vuex)
 
 const state = {
   cartList: [],
-  allCheck: false
+  allCheck: false,
+  isDelete: false,
+  message:'',
 }
 
 const store = new Vuex.Store({

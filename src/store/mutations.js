@@ -20,9 +20,13 @@ export default {
     //   }
     // }
     addCounter(state,payload){
+      state.message = '购物车中该商品数量+1';
+      // console.log(state.message);
       payload.count ++
     },
     addToCart(state, payload){
+      state.message = '该商品添加到购物车';
+      // console.log(state.message);
       state.cartList.push(payload)
     },
    
