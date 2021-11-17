@@ -60,6 +60,6 @@ export default {
 }
 .active {
   background-color: #fff;
-  color: orangered;
+  color: var(--color-high-text);
 }
 </style>

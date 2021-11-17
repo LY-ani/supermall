@@ -1,26 +1,33 @@
 <template>
   <div class="category">
-    <cate-title
-      ref="catet"
-      :titleList="titleList"
-      class="cate-title"
-      @titleClick="titleClick"
-    >
-    </cate-title>
-    <cate-right
-      class="cate-right"
-      :upGoods="upGoods"
-      :downGoods="downGoods"
-      @changeType="changeType"
-    >
-    </cate-right>
+    <nav-bar class="nav-bar">
+      <template v-slot:center> 商品分类 </template>
+    </nav-bar>
+    <div class="cate-info">
+      <cate-title
+        ref="catet"
+        :titleList="titleList"
+        class="cate-title"
+        @titleClick="titleClick"
+      >
+      </cate-title>
+      <cate-right
+        class="cate-right"
+        :upGoods="upGoods"
+        :downGoods="downGoods"
+        @changeType="changeType"
+      >
+      </cate-right>
+    </div>
   </div>
 </template>
 
 <script>
 import CateTitle from "./childComps/CateTitle.vue";
 import CateRight from "./childComps/CateRight.vue";
+
 import Scroll from "components/common/scroll/Scroll.vue";
+import NavBar from "components/common/navbar/NavBar.vue";
 
 import { getCategory, getUpGoods, getDownGoods } from "network/category.js";
 
@@ -30,6 +37,7 @@ export default {
     CateTitle,
     CateRight,
     Scroll,
+    NavBar,
   },
   data() {
     return {
@@ -55,7 +63,7 @@ export default {
     titleClick(index) {
       // console.log(this.titleList[index].maitKey);
       this.titleList[index].currentType = this.currentType;
-      console.log(this.titleList[index].currentType);
+      // console.log(this.titleList[index].currentType);
       this.getUpGoods(this.titleList[index].maitKey);
       this.getDownGoods(
         this.titleList[index].miniWallkey,
@@ -90,14 +98,24 @@ export default {
 </script>
 
 <style scoped>
-.category {
-  display: flex;
+.nav-bar {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  color: #fff;
+  background-color: var(--color-tint);
+  z-index: 12;
+}
+.cate-info {
+  display: flex;
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
   bottom: 49px;
 }
+
 .cate-title {
   /* height: 100%; */
   background-color: #eee;

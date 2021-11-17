@@ -36,9 +36,10 @@
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <detail-bottom-bar @addToCart="addToCart"></detail-bottom-bar>
-    <span class="count-show" v-show="isCountShow">
+    <!-- <span class="count-show" v-show="isCountShow">
       <span class="count-span">{{ $store.state.message }}</span>
-    </span>
+    </span> -->
+    <toast></toast>
   </div>
 </template>
 
@@ -55,6 +56,7 @@ import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 import Scroll from "components/common/scroll/Scroll.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import BackTop from "components/content/backTop/BackTop.vue";
+import Toast from "components/common/toast/Toast.vue";
 
 import {
   getDetail,
@@ -79,6 +81,7 @@ export default {
     Scroll,
     GoodsList,
     BackTop,
+    Toast,
   },
   data() {
     return {
@@ -165,6 +168,8 @@ export default {
       setTimeout(() => {
         this.isCountShow = false;
       }, 2000);
+
+      this.$toast.show(this.$store.state.message, 2000);
     },
   },
 

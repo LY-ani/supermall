@@ -10,7 +10,7 @@
     <div class="delete" v-show="this.$store.state.isDelete" @click="deleteCart">
       删除
     </div>
-    <div class="buy">
+    <div class="buy" @click="calcClick">
       <span>去结算({{ allProduct }})</span>
     </div>
   </div>
@@ -56,7 +56,26 @@ export default {
       this.$store.state.isDelete = this.$store.state.allCheck;
     },
     deleteCart() {
-      this.$store.dispatch("deleteCart");
+      if (this.cartList.length !== 0) {
+        this.$store.dispatch("deleteCart");
+        this.$toast.show("删除成功", 2000);
+      } else {
+        this.$toast.show("当前购物车为空", 2000);
+      }
+    },
+    calcClick() {
+      let flag = false;
+      for (let item of this.cartList) {
+        if (item.isChecked) {
+          flag = true;
+          break;
+        }
+      }
+      if (flag) {
+        this.$toast.show("购买成功", 2000);
+      } else {
+        this.$toast.show("请选择要购买的商品", 2000);
+      }
     },
   },
 };

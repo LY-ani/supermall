@@ -35,9 +35,9 @@ export default {
     //   console.log(i);
     // }
 
-    if(context.state.cartList.length !== 0){
-      const l = context.state.cartList.length
-      for(let i = 0;i<l;i++){
+    // if(context.state.cartList.length !== 0){
+      // const l = context.state.cartList.length
+      for(let i = 0;i<3;i++){
       context.state.cartList.forEach(function(item,index){
         if(item.isChecked){
           context.state.cartList.splice(index,1)
@@ -61,8 +61,8 @@ export default {
       //   i++
       //   console.log(i);
       // }
-    } else {
-      console.log('当前购物车为空');
-    }
+    // } else {
+    //   console.log('当前购物车为空');
+    // }
   }
 }
