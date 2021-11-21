@@ -77,6 +77,7 @@ export default {
 .cate-right-up {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   border-bottom: 8px solid #ddd;
 }
 </style>

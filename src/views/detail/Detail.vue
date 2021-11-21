@@ -39,7 +39,7 @@
     <!-- <span class="count-show" v-show="isCountShow">
       <span class="count-span">{{ $store.state.message }}</span>
     </span> -->
-    <toast></toast>
+    <!-- <toast></toast> -->
   </div>
 </template>
 
@@ -56,7 +56,7 @@ import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 import Scroll from "components/common/scroll/Scroll.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import BackTop from "components/content/backTop/BackTop.vue";
-import Toast from "components/common/toast/Toast.vue";
+// import Toast from "components/common/toast/Toast.vue";
 
 import {
   getDetail,
@@ -81,7 +81,7 @@ export default {
     Scroll,
     GoodsList,
     BackTop,
-    Toast,
+    // Toast,
   },
   data() {
     return {
@@ -149,27 +149,36 @@ export default {
       // console.log(this.themeTopYs);
     },
     addToCart() {
-      // 1.获取购物车需要展示的信息
-      const product = {};
-      product.image = this.topImages[0];
-      product.title = this.goods.title;
-      product.desc = this.goods.desc;
-      product.price = this.goods.realPrice;
-      product.iid = this.iid;
-      product.isChecked = false;
-      product.isDelete = false;
-      product.message = "";
-      // console.log(product);
+      const userFlag = window.sessionStorage.getItem("username");
+      if (!userFlag) {
+        this.$toast.show("请登录后再加入购物车", 1000);
+        setTimeout(() => {
+          this.$router.push({
+            path: "/login",
+          });
+        }, 1000);
+      } else {
+        // 1.获取购物车需要展示的信息
+        const product = {};
+        product.image = this.topImages[0];
+        product.title = this.goods.title;
+        product.desc = this.goods.desc;
+        product.price = this.goods.realPrice;
+        product.iid = this.iid;
+        product.isChecked = false;
+        product.isDelete = false;
+        product.message = "";
+        // console.log(product);
 
-      // 2.修改store状态
-      // this.$store.commit("addCart", product);
-      this.$store.dispatch("addCart", product);
-      this.isCountShow = true;
-      setTimeout(() => {
-        this.isCountShow = false;
-      }, 2000);
-
-      this.$toast.show(this.$store.state.message, 2000);
+        // 2.修改store状态
+        // this.$store.commit("addCart", product);
+        this.$store.dispatch("addCart", product);
+        this.isCountShow = true;
+        setTimeout(() => {
+          this.isCountShow = false;
+        }, 2000);
+        this.$toast.show(this.$store.state.message, 2000);
+      }
     },
   },
 

@@ -3,7 +3,7 @@
     <div class="pro-top">
       <div class="pro-archives">
         <div class="pro-title">我的档案</div>
-        <div class="pro-login">
+        <div class="pro-login" @click="goLogin">
           <img src="~assets/img/profile/avatar.svg" alt="" />
           <div>
             <p>登录/注册</p>
@@ -41,7 +41,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goLogin() {
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 
 <style scoped>

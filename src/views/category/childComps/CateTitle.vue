@@ -45,8 +45,8 @@ export default {
 
 <style scoped>
 .cate-title {
-  width: 25vw;
-  font-size: 4vw;
+  width: 90px;
+  font-size: 16px;
   text-align: center;
 }
 .content {

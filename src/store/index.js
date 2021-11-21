@@ -7,6 +7,18 @@ import getters from './getters.js'
 
 Vue.use(Vuex)
 
+// let user = sessionStorage.username;
+// let userInfo = localStorage.userInfo;
+// let cart = []
+// if (userInfo) {
+//   userInfo = JSON.parse(userInfo);
+//   userInfo.map((item) => {
+//     if (item.username == user) {
+//       cart = item.cartList;
+//     }
+//   });
+// }
+
 const state = {
   cartList: [],
   allCheck: false,
